@@ -2,7 +2,9 @@ package com.example.starter;
 
 import com.mongodb.BasicDBObject;
 import com.mongodb.reactivestreams.client.MongoCollection;
-import io.reactivex.rxjava3.core.Flowable;
+import io.reactivex.rxjava3.annotations.NonNull;
+import io.reactivex.rxjava3.core.Observable;
+import io.reactivex.rxjava3.core.Single;
 import io.vertx.core.Handler;
 import io.vertx.core.json.JsonObject;
 import io.vertx.ext.web.RoutingContext;
@@ -44,11 +46,11 @@ public class TokenPostHandler implements Handler<RoutingContext> {
     });
   }
 
-  private Flowable<Boolean> validate(String username, String password) {
+  private Single<Boolean> validate(String username, String password) {
     MongoCollection<Document> collection = dbClient.getDatabase().getCollection("user");
     BasicDBObject condition = new BasicDBObject().append("username", username);
     Publisher<Document> user = collection.find(condition).first();
-    return Flowable.fromPublisher(user)
+    return Single.fromPublisher(user)
       .map(document -> Objects.equals(password, document.getString("password")));
   }
 }
