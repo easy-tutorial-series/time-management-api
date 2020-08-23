@@ -12,6 +12,7 @@ import lombok.extern.slf4j.Slf4j;
 public class MainVerticle extends AbstractVerticle {
   private final CommonFailureHandler commonFailureHandler = new CommonFailureHandler();
   private final JwtUtils jwtUtils = new JwtUtils();
+  private final DbClient dbClient = new DbClient("mongodb://root:password@localhost", "test");
 
   @Override
   public void start(Promise<Void> startPromise) {
@@ -34,10 +35,10 @@ public class MainVerticle extends AbstractVerticle {
     var router = Router.router(vertx);
     router.post("/token")
       .handler(BodyHandler.create())
-      .handler(new TokenPostHandler(jwtUtils))
+      .handler(new TokenPostHandler(jwtUtils, dbClient))
       .failureHandler(commonFailureHandler);
     router.get("/user")
-      .handler(new UserGetHandler(jwtUtils))
+      .handler(new UserGetHandler(jwtUtils, dbClient))
       .failureHandler(commonFailureHandler);
     return router;
   }

@@ -6,9 +6,11 @@ import io.vertx.ext.web.RoutingContext;
 
 public class UserGetHandler implements Handler<RoutingContext> {
   private final JwtUtils jwtUtils;
+  private final DbClient dbClient;
 
-  public UserGetHandler(JwtUtils jwtUtils) {
+  public UserGetHandler(JwtUtils jwtUtils, DbClient dbClient) {
     this.jwtUtils = jwtUtils;
+    this.dbClient = dbClient;
   }
 
   @Override

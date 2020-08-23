@@ -21,8 +21,10 @@ To package your application:
 ./mvnw clean package
 ```
 
+The result is `target/time-management-api-0.1-fat.jar`.
+
 To run your application as jar:
 
 ```
-java -jar target/starter-0.1-fat.jar
+java -jar target/time-management-api-0.1-fat.jar
 ```
