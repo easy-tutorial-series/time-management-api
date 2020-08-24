@@ -2,10 +2,9 @@ package com.example.starter;
 
 import com.mongodb.BasicDBObject;
 import com.mongodb.reactivestreams.client.MongoCollection;
-import io.reactivex.rxjava3.annotations.NonNull;
-import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.core.Single;
 import io.vertx.core.Handler;
+import io.vertx.core.http.HttpServerResponse;
 import io.vertx.core.json.JsonObject;
 import io.vertx.ext.web.RoutingContext;
 import lombok.extern.slf4j.Slf4j;
@@ -27,21 +26,21 @@ public class TokenPostHandler implements Handler<RoutingContext> {
 
   @Override
   public void handle(RoutingContext routingContext) {
-    var body = routingContext.getBodyAsJson();
-    var response = routingContext.response();
+    JsonObject body = routingContext.getBodyAsJson();
+    HttpServerResponse response = routingContext.response();
     response.putHeader("content-type", "application/json");
 
-    var username = body.getString("username");
-    var password = body.getString("password");
-    var isValidFuture = validate(username, password);
+    String username = body.getString("username");
+    String password = body.getString("password");
+    Single<Boolean> isValidFuture = validate(username, password);
 
     isValidFuture.subscribe(isValid -> {
       if (!isValid) {
-        var message = new JsonObject().put("message", "invalid username or password").encode();
+        String message = new JsonObject().put("message", "invalid username or password").encode();
         response.setStatusCode(401).end(message);
         return;
       }
-      var token = jwtUtils.generate(username);
+      String token = jwtUtils.generate(username);
       response.end(new JsonObject().put("token", token).encode());
     });
   }
