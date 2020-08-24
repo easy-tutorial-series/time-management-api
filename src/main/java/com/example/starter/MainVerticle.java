@@ -34,8 +34,9 @@ public class MainVerticle extends AbstractVerticle {
     SecretKey key = Keys.hmacShaKeyFor(secretString.getBytes());
     JwtUtils jwtUtils = new JwtUtils(key);
     TokenPostHandler tokenPostHandler = new TokenPostHandler(jwtUtils, dbClient);
-    UserGetHandler userGetHandler = new UserGetHandler(jwtUtils);
+    UserGetHandler userGetHandler = new UserGetHandler();
     CommonFailureHandler commonFailureHandler = new CommonFailureHandler();
+    JwtAuthenticationHandler jwtAuthenticationHandler = new JwtAuthenticationHandler(jwtUtils);
 
     Router router = Router.router(vertx);
     router.post("/token")
@@ -43,6 +44,7 @@ public class MainVerticle extends AbstractVerticle {
       .handler(tokenPostHandler)
       .failureHandler(commonFailureHandler);
     router.get("/user")
+      .handler(jwtAuthenticationHandler)
       .handler(userGetHandler)
       .failureHandler(commonFailureHandler);
     return router;

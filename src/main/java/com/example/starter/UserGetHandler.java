@@ -6,18 +6,10 @@ import io.vertx.core.json.JsonObject;
 import io.vertx.ext.web.RoutingContext;
 
 public class UserGetHandler implements Handler<RoutingContext> {
-  private final JwtUtils jwtUtils;
-
-  public UserGetHandler(JwtUtils jwtUtils) {
-    this.jwtUtils = jwtUtils;
-  }
-
   @Override
-  public void handle(RoutingContext routingContext) {
-    HttpServerResponse response = routingContext.response();
-    String token = routingContext.request().getHeader("Authorization");
-    String username = jwtUtils.parseBody(token).getSubject();
-
+  public void handle(RoutingContext ctx) {
+    HttpServerResponse response = ctx.response();
+    String username = ctx.get("username");
     response.putHeader("content-type", "application/json");
     response.end(new JsonObject().put("username", username).encode());
   }

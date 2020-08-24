@@ -18,7 +18,7 @@ public class JwtUtils {
 
   public String generate(String username) {
     Date issuedAt = new Date();
-    Date expiration = Date.from(Instant.now().plus(1, ChronoUnit.DAYS));
+    Date expiration = Date.from(Instant.now().plus(1, ChronoUnit.HOURS));
     return Jwts.builder()
       .signWith(key)
       .setSubject(username)
