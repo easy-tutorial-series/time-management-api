@@ -1,4 +1,4 @@
-# time-management-back-end
+# time-management-api
 
 ![https://vertx.io](https://img.shields.io/badge/vert.x-4.0.0.Beta1-purple.svg)
 
@@ -9,7 +9,7 @@
 
 ## Building
 
-To run your application by Maven:
+To run your application by Gradle:
 
 ```
 ./gradlew run
@@ -21,10 +21,8 @@ To package your application:
 ./gradlew clean shadowJar
 ```
 
-The result is `target/time-management-api-0.1-fat.jar`.
-
 To run your application as jar:
 
 ```
-java -jar target/time-management-api-0.1-fat.jar
+java -jar build/libs/time-management-api-all.jar
 ```
