@@ -1,4 +1,4 @@
-package com.example.starter;
+package com.github.gcnyin.timemanagement;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;

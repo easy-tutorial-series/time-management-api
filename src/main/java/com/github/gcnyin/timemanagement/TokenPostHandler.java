@@ -1,13 +1,11 @@
-package com.example.starter;
+package com.github.gcnyin.timemanagement;
 
-import com.example.starter.exception.BadRequestException;
+import com.github.gcnyin.timemanagement.exception.BadRequestException;
 import com.mongodb.BasicDBObject;
 import com.mongodb.reactivestreams.client.MongoCollection;
 import io.reactivex.rxjava3.core.Single;
-import io.reactivex.rxjava3.functions.Consumer;
 import io.vertx.core.Handler;
 import io.vertx.core.http.HttpServerResponse;
-import io.vertx.core.json.Json;
 import io.vertx.core.json.JsonObject;
 import io.vertx.ext.web.RoutingContext;
 import lombok.extern.slf4j.Slf4j;

@@ -1,0 +1,33 @@
+plugins {
+  id 'java'
+  id 'application'
+  id 'com.github.johnrengelman.shadow' version '6.0.0'
+  id "io.freefair.lombok" version "5.1.1"
+}
+
+group = "com.example"
+version = "1.0.0-SNAPSHOT"
+sourceCompatibility = JavaVersion.VERSION_11
+targetCompatibility = JavaVersion.VERSION_11
+
+def vertxVersion = "4.0.0.Beta1"
+
+repositories {
+  mavenLocal()
+  mavenCentral()
+}
+
+
+dependencies {
+  implementation "io.vertx:vertx-web:$vertxVersion"
+  implementation 'org.mongodb:mongodb-driver-reactivestreams:4.1.0'
+  implementation 'io.jsonwebtoken:jjwt-api:0.11.2'
+  runtime 'io.jsonwebtoken:jjwt-impl:0.11.2'
+  runtime 'io.jsonwebtoken:jjwt-jackson:0.11.2'
+  implementation 'io.reactivex.rxjava3:rxjava:3.0.6'
+  implementation 'ch.qos.logback:logback-classic:1.2.3'
+}
+
+application {
+  mainClassName = 'com.github.gcnyin.timemanagement.Main'
+}

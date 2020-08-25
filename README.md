@@ -12,13 +12,13 @@
 To run your application by Maven:
 
 ```
-./mvnw compile exec:java
+./gradlew run
 ```
 
 To package your application:
 
 ```
-./mvnw clean package
+./gradlew clean shadowJar
 ```
 
 The result is `target/time-management-api-0.1-fat.jar`.

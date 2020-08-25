@@ -1,4 +1,4 @@
-package com.example.starter;
+package com.github.gcnyin.timemanagement;
 
 import io.jsonwebtoken.security.Keys;
 import io.vertx.core.AbstractVerticle;

@@ -1,4 +1,4 @@
-package com.example.starter;
+package com.github.gcnyin.timemanagement;
 
 import com.mongodb.reactivestreams.client.MongoClients;
 import com.mongodb.reactivestreams.client.MongoDatabase;

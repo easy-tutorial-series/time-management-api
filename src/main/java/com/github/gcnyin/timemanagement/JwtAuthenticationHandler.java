@@ -1,4 +1,4 @@
-package com.example.starter;
+package com.github.gcnyin.timemanagement;
 
 import io.vertx.core.Handler;
 import io.vertx.core.http.HttpHeaders;
