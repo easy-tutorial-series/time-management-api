@@ -9,8 +9,8 @@ public class UserGetHandler implements Handler<RoutingContext> {
   @Override
   public void handle(RoutingContext ctx) {
     HttpServerResponse response = ctx.response();
-    String username = ctx.get("username");
+    String userId = ctx.get("userId");
     response.putHeader("content-type", "application/json");
-    response.end(new JsonObject().put("username", username).encode());
+    response.end(new JsonObject().put("userId", userId).encode());
   }
 }

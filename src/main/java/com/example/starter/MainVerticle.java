@@ -29,11 +29,11 @@ public class MainVerticle extends AbstractVerticle {
   private Router bootstrap() {
     String connectionString = "mongodb://root:password@localhost";
     String database = "test";
-    DbClient dbClient = new DbClient(connectionString, database);
+    MongoDbClient mongoDbClient = new MongoDbClient(connectionString, database);
     String secretString = "a8jh0Vf5C0lPAuTJO2vQYBJGT1ScVdeLI12C2gXDHo8=";
     SecretKey key = Keys.hmacShaKeyFor(secretString.getBytes());
     JwtUtils jwtUtils = new JwtUtils(key);
-    TokenPostHandler tokenPostHandler = new TokenPostHandler(jwtUtils, dbClient);
+    TokenPostHandler tokenPostHandler = new TokenPostHandler(jwtUtils, mongoDbClient);
     UserGetHandler userGetHandler = new UserGetHandler();
     CommonFailureHandler commonFailureHandler = new CommonFailureHandler();
     JwtAuthenticationHandler jwtAuthenticationHandler = new JwtAuthenticationHandler(jwtUtils);

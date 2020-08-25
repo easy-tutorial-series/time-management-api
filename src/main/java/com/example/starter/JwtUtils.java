@@ -16,12 +16,12 @@ public class JwtUtils {
     this.key = key;
   }
 
-  public String generate(String username) {
+  public String generate(String subject) {
     Date issuedAt = new Date();
-    Date expiration = Date.from(Instant.now().plus(1, ChronoUnit.HOURS));
+    Date expiration = Date.from(Instant.now().plus(10, ChronoUnit.MINUTES));
     return Jwts.builder()
       .signWith(key)
-      .setSubject(username)
+      .setSubject(subject)
       .setIssuedAt(issuedAt)
       .setExpiration(expiration)
       .compact();
