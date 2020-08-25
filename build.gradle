@@ -10,6 +10,7 @@ sourceCompatibility = JavaVersion.VERSION_11
 targetCompatibility = JavaVersion.VERSION_11
 
 def vertxVersion = "4.0.0.Beta1"
+def junitJupiterVersion = "5.6.2"
 
 repositories {
   mavenLocal()
@@ -25,8 +26,16 @@ dependencies {
   runtime 'io.jsonwebtoken:jjwt-jackson:0.11.2'
   implementation 'io.reactivex.rxjava3:rxjava:3.0.6'
   implementation 'ch.qos.logback:logback-classic:1.2.3'
+
+  testImplementation "io.vertx:vertx-junit5:$vertxVersion"
+  testImplementation "org.junit.jupiter:junit-jupiter:$junitJupiterVersion"
 }
 
 application {
   mainClassName = 'com.github.gcnyin.timemanagement.Main'
+}
+
+test {
+  useJUnitPlatform()
+  testLogging.showStandardStreams(true)
 }
