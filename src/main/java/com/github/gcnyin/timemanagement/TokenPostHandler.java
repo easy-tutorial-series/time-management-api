@@ -3,6 +3,7 @@ package com.github.gcnyin.timemanagement;
 import com.github.gcnyin.timemanagement.exception.BadRequestException;
 import com.mongodb.BasicDBObject;
 import com.mongodb.reactivestreams.client.MongoCollection;
+import com.mongodb.reactivestreams.client.MongoDatabase;
 import io.reactivex.rxjava3.core.Single;
 import io.vertx.core.Handler;
 import io.vertx.core.http.HttpServerResponse;
@@ -18,9 +19,9 @@ import java.util.Objects;
 public class TokenPostHandler implements Handler<RoutingContext> {
 
   private final JwtUtils jwtUtils;
-  private final MongoDbClient mongoDbClient;
+  private final MongoDatabase mongoDbClient;
 
-  public TokenPostHandler(JwtUtils jwtUtils, MongoDbClient mongoDbClient) {
+  public TokenPostHandler(JwtUtils jwtUtils, MongoDatabase mongoDbClient) {
     this.jwtUtils = jwtUtils;
     this.mongoDbClient = mongoDbClient;
   }
@@ -33,7 +34,7 @@ public class TokenPostHandler implements Handler<RoutingContext> {
 
     String username = body.getString("username");
     String password = body.getString("password");
-    MongoCollection<Document> collection = mongoDbClient.getDatabase().getCollection("user");
+    MongoCollection<Document> collection = mongoDbClient.getCollection("user");
     BasicDBObject condition = new BasicDBObject().append("username", username);
     Publisher<Document> user = collection.find(condition).first();
     Single<Document> single = Single.fromPublisher(user);
