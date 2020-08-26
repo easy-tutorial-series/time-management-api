@@ -10,7 +10,7 @@ public class MongoDbClient {
 
   /**
    * @param connectionString see https://docs.mongodb.com/manual/reference/connection-string/
-   * @param database MongoDB database name
+   * @param database         MongoDB database name
    */
   public MongoDbClient(String connectionString, String database) {
     this.database = MongoClients.create(connectionString).getDatabase(database);

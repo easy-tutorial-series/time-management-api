@@ -1,6 +1,7 @@
 package com.github.gcnyin.timemanagement;
 
 import io.jsonwebtoken.security.Keys;
+import io.reactivex.rxjava3.core.Single;
 import io.vertx.core.AbstractVerticle;
 import io.vertx.core.Promise;
 import io.vertx.ext.web.Router;
@@ -8,6 +9,7 @@ import io.vertx.ext.web.handler.BodyHandler;
 import lombok.extern.slf4j.Slf4j;
 
 import javax.crypto.SecretKey;
+import java.util.concurrent.TimeUnit;
 
 @Slf4j
 public class MainVerticle extends AbstractVerticle {
@@ -30,6 +32,12 @@ public class MainVerticle extends AbstractVerticle {
     String connectionString = "mongodb://root:password@localhost";
     String database = "test";
     MongoDbClient mongoDbClient = new MongoDbClient(connectionString, database);
+    Single.fromPublisher(mongoDbClient.getDatabase().listCollectionNames())
+      .timeout(5, TimeUnit.SECONDS)
+      .subscribe(log::info, e -> {
+        log.error("mongo connection error", e);
+        vertx.close();
+      });
     String secretString = "a8jh0Vf5C0lPAuTJO2vQYBJGT1ScVdeLI12C2gXDHo8=";
     SecretKey key = Keys.hmacShaKeyFor(secretString.getBytes());
     JwtUtils jwtUtils = new JwtUtils(key);
@@ -48,5 +56,10 @@ public class MainVerticle extends AbstractVerticle {
       .handler(userGetHandler)
       .failureHandler(commonFailureHandler);
     return router;
+  }
+
+  @Override
+  public void stop() {
+    log.info("MainVerticle stopped");
   }
 }
