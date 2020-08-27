@@ -1,10 +1,10 @@
-FROM maven:3.6.3-jdk-11 AS builder
-WORKDIR /app
-COPY . /app
-RUN mvn clean package
+FROM gradle:6.6.1-jdk11 AS builder
+WORKDIR /builder
+COPY . /builder
+RUN gradle build
 
-FROM openjdk:11-jre-slim
+FROM openjdk:11-jre-buster
 WORKDIR /app
-COPY --from=builder /app/target/time-management-api-0.1-fat.jar /app/app.jar
+COPY --from=builder /builder/build/libs/time-management-api-all.jar /app/api.jar
 EXPOSE 8080
-ENTRYPOINT ["java", "-jar", "app.jar"]
+ENTRYPOINT ["java", "-jar", "api.jar"]
