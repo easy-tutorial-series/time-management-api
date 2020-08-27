@@ -53,26 +53,11 @@ public class MainVerticle extends AbstractVerticle {
     String secretString = "a8jh0Vf5C0lPAuTJO2vQYBJGT1ScVdeLI12C2gXDHo8=";
     SecretKey key = Keys.hmacShaKeyFor(secretString.getBytes());
     JwtUtils jwtUtils = new JwtUtils(key);
-    TokenPostHandler tokenPostHandler = new TokenPostHandler(jwtUtils, mongoDatabase);
-    UserGetHandler userGetHandler = new UserGetHandler();
     CommonFailureHandler commonFailureHandler = new CommonFailureHandler();
     JwtAuthenticationHandler jwtAuthenticationHandler = new JwtAuthenticationHandler(jwtUtils);
-    Handler<RoutingContext> userPostHandler = event -> {
-      JsonObject bodyAsJson = event.getBodyAsJson();
-      String username = bodyAsJson.getString("username");
-      String password = bodyAsJson.getString("password");
-      MongoCollection<Document> user = mongoDatabase.getCollection("user");
-      Document document = new Document("username", username).append("password", password);
-      HttpServerResponse response = event.response();
-      response.putHeader(HttpHeaders.AUTHORIZATION, "application/json");
-      Single.fromPublisher(user.insertOne(document))
-        .subscribe(v -> {
-          response.end(new JsonObject().put("username", username).encode());
-        }, e -> {
-          log.error("insert error", e);
-          response.setStatusCode(400).end(new JsonObject().put("error", e.getMessage()).encode());
-        });
-    };
+    TokenPostHandler tokenPostHandler = new TokenPostHandler(jwtUtils, mongoDatabase);
+    UserGetHandler userGetHandler = new UserGetHandler();
+    UserPostHandler userPostHandler = new UserPostHandler(mongoDatabase.getCollection("user"));
 
     Router router = Router.router(vertx);
     router.post("/token")
