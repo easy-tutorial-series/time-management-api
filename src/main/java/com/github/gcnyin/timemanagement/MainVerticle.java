@@ -1,15 +1,23 @@
 package com.github.gcnyin.timemanagement;
 
+import com.mongodb.reactivestreams.client.MongoCollection;
 import com.mongodb.reactivestreams.client.MongoDatabase;
 import io.jsonwebtoken.security.Keys;
 import io.reactivex.rxjava3.core.Single;
 import io.vertx.core.AbstractVerticle;
+import io.vertx.core.Handler;
 import io.vertx.core.Promise;
+import io.vertx.core.http.HttpHeaders;
+import io.vertx.core.http.HttpServerResponse;
+import io.vertx.core.json.JsonObject;
 import io.vertx.ext.web.Router;
+import io.vertx.ext.web.RoutingContext;
 import io.vertx.ext.web.handler.BodyHandler;
 import lombok.extern.slf4j.Slf4j;
+import org.bson.Document;
 
 import javax.crypto.SecretKey;
+import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
 @Slf4j
@@ -49,6 +57,22 @@ public class MainVerticle extends AbstractVerticle {
     UserGetHandler userGetHandler = new UserGetHandler();
     CommonFailureHandler commonFailureHandler = new CommonFailureHandler();
     JwtAuthenticationHandler jwtAuthenticationHandler = new JwtAuthenticationHandler(jwtUtils);
+    Handler<RoutingContext> userPostHandler = event -> {
+      JsonObject bodyAsJson = event.getBodyAsJson();
+      String username = bodyAsJson.getString("username");
+      String password = bodyAsJson.getString("password");
+      MongoCollection<Document> user = mongoDatabase.getCollection("user");
+      Document document = new Document("username", username).append("password", password);
+      HttpServerResponse response = event.response();
+      response.putHeader(HttpHeaders.AUTHORIZATION, "application/json");
+      Single.fromPublisher(user.insertOne(document))
+        .subscribe(v -> {
+          response.end(new JsonObject().put("username", username).encode());
+        }, e -> {
+          log.error("insert error", e);
+          response.setStatusCode(400).end(new JsonObject().put("error", e.getMessage()).encode());
+        });
+    };
 
     Router router = Router.router(vertx);
     router.post("/token")
@@ -58,6 +82,10 @@ public class MainVerticle extends AbstractVerticle {
     router.get("/user")
       .handler(jwtAuthenticationHandler)
       .handler(userGetHandler)
+      .failureHandler(commonFailureHandler);
+    router.post("/user")
+      .handler(BodyHandler.create())
+      .handler(userPostHandler)
       .failureHandler(commonFailureHandler);
     return router;
   }
