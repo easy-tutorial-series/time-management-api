@@ -5,7 +5,7 @@ plugins {
   id "io.freefair.lombok" version "5.1.1"
 }
 
-group = "com.example"
+group = "com.github.gcnyin.timemanagement"
 
 java {
   sourceCompatibility = JavaVersion.VERSION_11
@@ -14,19 +14,19 @@ java {
 
 def vertxVersion = "4.0.0.Beta1"
 def junitJupiterVersion = "5.6.2"
+def jjwtVersion = "0.11.2"
 
 repositories {
   mavenLocal()
   mavenCentral()
 }
 
-
 dependencies {
   implementation "io.vertx:vertx-web:$vertxVersion"
+  implementation "io.jsonwebtoken:jjwt-api:$jjwtVersion"
+  runtimeOnly "io.jsonwebtoken:jjwt-impl:$jjwtVersion"
+  runtimeOnly "io.jsonwebtoken:jjwt-jackson:$jjwtVersion"
   implementation 'org.mongodb:mongodb-driver-reactivestreams:4.1.0'
-  implementation 'io.jsonwebtoken:jjwt-api:0.11.2'
-  runtimeOnly 'io.jsonwebtoken:jjwt-impl:0.11.2'
-  runtimeOnly 'io.jsonwebtoken:jjwt-jackson:0.11.2'
   implementation 'io.reactivex.rxjava3:rxjava:3.0.6'
   implementation 'ch.qos.logback:logback-classic:1.2.3'
 
@@ -42,6 +42,3 @@ test {
   useJUnitPlatform()
   testLogging.showStandardStreams(true)
 }
-
-task stage(dependsOn: ['build', 'clean'])
-build.mustRunAfter clean
