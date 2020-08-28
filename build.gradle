@@ -42,3 +42,6 @@ test {
   useJUnitPlatform()
   testLogging.showStandardStreams(true)
 }
+
+task stage(dependsOn: ['build', 'clean'])
+build.mustRunAfter clean
