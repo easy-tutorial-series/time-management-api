@@ -27,7 +27,11 @@ public class MainVerticle extends AbstractVerticle {
     Single<Router> routerSingle = bootstrapRouter();
     routerSingle.subscribe(
       router -> boostrapVertx(startPromise, router),
-      throwable -> log.error("boot router failed", throwable));
+      throwable -> {
+        log.error("boot router failed", throwable);
+        log.info("exit");
+        vertx.close();
+      });
   }
 
   private void boostrapVertx(Promise<Void> startPromise, Router router) {
