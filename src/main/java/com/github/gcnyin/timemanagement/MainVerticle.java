@@ -1,23 +1,17 @@
 package com.github.gcnyin.timemanagement;
 
-import com.mongodb.reactivestreams.client.MongoCollection;
 import com.mongodb.reactivestreams.client.MongoDatabase;
 import io.jsonwebtoken.security.Keys;
 import io.reactivex.rxjava3.core.Single;
 import io.vertx.core.AbstractVerticle;
-import io.vertx.core.Handler;
+import io.vertx.core.AsyncResult;
 import io.vertx.core.Promise;
-import io.vertx.core.http.HttpHeaders;
-import io.vertx.core.http.HttpServerResponse;
-import io.vertx.core.json.JsonObject;
+import io.vertx.core.http.HttpServer;
 import io.vertx.ext.web.Router;
-import io.vertx.ext.web.RoutingContext;
 import io.vertx.ext.web.handler.BodyHandler;
 import lombok.extern.slf4j.Slf4j;
-import org.bson.Document;
 
 import javax.crypto.SecretKey;
-import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
 @Slf4j
@@ -30,26 +24,38 @@ public class MainVerticle extends AbstractVerticle {
 
   @Override
   public void start(Promise<Void> startPromise) {
+    Single<Router> routerSingle = bootstrapRouter();
+    routerSingle.subscribe(
+      router -> boostrapVertx(startPromise, router),
+      throwable -> log.error("boot router failed", throwable));
+  }
+
+  private void boostrapVertx(Promise<Void> startPromise, Router router) {
     vertx.createHttpServer()
-      .requestHandler(bootstrap())
-      .listen(8080, http -> {
-        if (http.succeeded()) {
-          startPromise.complete();
-          log.info("HTTP Server started on port 8080");
-        } else {
-          log.error("HTTP Server stop", http.cause());
-          startPromise.fail(http.cause());
-        }
+      .requestHandler(router)
+      .listen(8080, http -> handleHttpStartResult(startPromise, http));
+  }
+
+  private void handleHttpStartResult(Promise<Void> startPromise, AsyncResult<HttpServer> http) {
+    if (http.succeeded()) {
+      startPromise.complete();
+      log.info("HTTP Server started on port 8080");
+    } else {
+      log.error("HTTP Server startup failed", http.cause());
+      startPromise.fail(http.cause());
+    }
+  }
+
+  private Single<Router> bootstrapRouter() {
+    return Single.fromPublisher(mongoDatabase.listCollectionNames())
+      .timeout(5, TimeUnit.SECONDS)
+      .map(i -> {
+        log.info("mongodb health check passed");
+        return getRouter();
       });
   }
 
-  private Router bootstrap() {
-    Single.fromPublisher(mongoDatabase.listCollectionNames())
-      .timeout(5, TimeUnit.SECONDS)
-      .subscribe(log::info, e -> {
-        log.error("mongo connection error", e);
-        vertx.close();
-      });
+  private Router getRouter() {
     String secretString = "a8jh0Vf5C0lPAuTJO2vQYBJGT1ScVdeLI12C2gXDHo8=";
     SecretKey key = Keys.hmacShaKeyFor(secretString.getBytes());
     JwtUtils jwtUtils = new JwtUtils(key);

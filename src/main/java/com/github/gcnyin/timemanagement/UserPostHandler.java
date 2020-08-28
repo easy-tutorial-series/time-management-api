@@ -10,6 +10,8 @@ import io.vertx.ext.web.RoutingContext;
 import lombok.extern.slf4j.Slf4j;
 import org.bson.Document;
 
+import java.util.UUID;
+
 @Slf4j
 public class UserPostHandler implements Handler<RoutingContext> {
   private final MongoCollection<Document> userDocument;
@@ -20,12 +22,19 @@ public class UserPostHandler implements Handler<RoutingContext> {
 
   @Override
   public void handle(RoutingContext event) {
+    HttpServerResponse response = event.response();
+    response.putHeader(HttpHeaders.CONTENT_TYPE, "application/json");
+
     JsonObject bodyAsJson = event.getBodyAsJson();
     String username = bodyAsJson.getString("username");
     String password = bodyAsJson.getString("password");
-    Document document = new Document("username", username).append("password", password);
-    HttpServerResponse response = event.response();
-    response.putHeader(HttpHeaders.CONTENT_TYPE, "application/json");
+    if (username == null || password == null) {
+      response.setStatusCode(400).end(new JsonObject().put("error", "username or password can not be empty").encode());
+      return;
+    }
+    Document document = new Document("id", UUID.randomUUID().toString())
+      .append("username", username).append("password", password);
+
     Single.fromPublisher(userDocument.insertOne(document))
       .subscribe(v -> {
         response.end(new JsonObject().put("username", username).encode());
