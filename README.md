@@ -5,7 +5,7 @@
 ## Requirements
 
 - Java 11
-- MongoDB
+- MongoDB(using `docker-compose.yml`)
 
 ## Building
 
