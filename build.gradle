@@ -6,8 +6,11 @@ plugins {
 }
 
 group = "com.example"
-sourceCompatibility = JavaVersion.VERSION_11
-targetCompatibility = JavaVersion.VERSION_11
+
+java {
+  sourceCompatibility = JavaVersion.VERSION_11
+  targetCompatibility = JavaVersion.VERSION_11
+}
 
 def vertxVersion = "4.0.0.Beta1"
 def junitJupiterVersion = "5.6.2"
