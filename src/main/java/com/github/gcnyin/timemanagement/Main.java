@@ -16,13 +16,12 @@ public class Main {
     MainVerticle verticle = new MainVerticle(database);
     Vertx vertx = Vertx.vertx();
     Future<String> future = vertx.deployVerticle(verticle);
-    future.onComplete(s -> {
-      if (s.failed()) {
-        log.error("failed");
+    future.onComplete(result -> {
+      if (result.failed()) {
+        log.error("startup failed", result.cause());
         vertx.close();
       } else {
-        String result = s.result();
-        log.info("deployId {}", result);
+        log.info("deployId {}", result.result());
       }
     });
   }
