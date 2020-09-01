@@ -11,7 +11,7 @@
 ## Build
 
 ```
-./gradlew clean build
+$ ./gradlew clean build
 ```
 
 ## Run
@@ -22,9 +22,8 @@ Running the application only needs one step.
 $ docker-compose up -d
 ```
 
-Or you can build the jar file, and manually run it.
+Or you can manually run the jar file.
 
 ```
-$ ./gradlew clean build
 $ java -jar build/libs/time-management-api-all.jar
 ```
