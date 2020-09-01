@@ -9,8 +9,12 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class Main {
   public static void main(String[] args) {
-    String connectionString = "mongodb://root:password@localhost";
-    String databaseName = "test";
+    long start = System.currentTimeMillis();
+    String mongoUser = System.getenv("MONGO_USER");
+    String mongoPassword = System.getenv("MONGO_PASSWORD");
+    String mongoHost = System.getenv("MONGO_HOST");
+    String databaseName = System.getenv("MONGO_DATABASE");
+    String connectionString = "mongodb://" + mongoUser + ":" + mongoPassword + "@" + mongoHost;
     MongoDatabase database = MongoClients.create(connectionString).getDatabase(databaseName);
 
     MainVerticle verticle = new MainVerticle(database);
@@ -21,7 +25,10 @@ public class Main {
         log.error("startup failed", result.cause());
         vertx.close();
       } else {
+        long end = System.currentTimeMillis();
         log.info("deployId {}", result.result());
+        long time = end - start;
+        log.info("spent time {} millis", time);
       }
     });
   }

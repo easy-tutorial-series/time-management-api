@@ -3,31 +3,28 @@
 ![https://vertx.io](https://img.shields.io/badge/vert.x-4.0.0.Beta1-purple.svg)
 ![https://www.oracle.com/java/technologies/javase-jdk11-downloads.html](https://img.shields.io/badge/Java-11-yellow.svg)
 
-## Pattern
-
-Only one verticle with routers.
-
 ## Requirements
 
-- [Java 11](./docs/install-java-11.md)
-- MongoDB(using `docker-compose up -d`)
+- Java 14
+- MongoDB
 
-## Building
-
-To run your application by Gradle:
+## Build
 
 ```
-./gradlew run
+./gradlew clean build
 ```
 
-To package your application:
+## Run
+
+Running the application only needs one step.
 
 ```
-./gradlew clean shadowJar
+$ docker-compose up -d
 ```
 
-To run your application as jar:
+Or you can build the jar file, and manually run it.
 
 ```
-java -jar build/libs/time-management-api-all.jar
+$ ./gradlew clean build
+$ java -jar build/libs/time-management-api-all.jar
 ```

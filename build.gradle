@@ -1,15 +1,15 @@
 plugins {
-  id 'java'
-  id 'application'
-  id 'com.github.johnrengelman.shadow' version '6.0.0'
-  id "io.freefair.lombok" version "5.1.1"
+    id 'java'
+    id 'application'
+    id 'com.github.johnrengelman.shadow' version '6.0.0'
+    id "io.freefair.lombok" version "5.1.1"
 }
 
 group = "com.github.gcnyin.timemanagement"
 
 java {
-  sourceCompatibility = JavaVersion.VERSION_11
-  targetCompatibility = JavaVersion.VERSION_11
+    sourceCompatibility = JavaVersion.VERSION_14
+    targetCompatibility = JavaVersion.VERSION_14
 }
 
 def vertxVersion = "4.0.0.Beta1"
@@ -17,28 +17,29 @@ def junitJupiterVersion = "5.6.2"
 def jjwtVersion = "0.11.2"
 
 repositories {
-  mavenLocal()
-  mavenCentral()
+    mavenLocal()
+    maven { url 'https://repo.huaweicloud.com/repository/maven/' }
+    mavenCentral()
 }
 
 dependencies {
-  implementation "io.vertx:vertx-web:$vertxVersion"
-  implementation "io.jsonwebtoken:jjwt-api:$jjwtVersion"
-  runtimeOnly "io.jsonwebtoken:jjwt-impl:$jjwtVersion"
-  runtimeOnly "io.jsonwebtoken:jjwt-jackson:$jjwtVersion"
-  implementation 'org.mongodb:mongodb-driver-reactivestreams:4.1.0'
-  implementation 'io.reactivex.rxjava3:rxjava:3.0.6'
-  implementation 'ch.qos.logback:logback-classic:1.2.3'
+    implementation "io.vertx:vertx-web:$vertxVersion"
+    implementation "io.jsonwebtoken:jjwt-api:$jjwtVersion"
+    runtimeOnly "io.jsonwebtoken:jjwt-impl:$jjwtVersion"
+    runtimeOnly "io.jsonwebtoken:jjwt-jackson:$jjwtVersion"
+    implementation 'org.mongodb:mongodb-driver-reactivestreams:4.1.0'
+    implementation 'io.reactivex.rxjava3:rxjava:3.0.6'
+    implementation 'ch.qos.logback:logback-classic:1.2.3'
 
-  testImplementation "io.vertx:vertx-junit5:$vertxVersion"
-  testImplementation "org.junit.jupiter:junit-jupiter:$junitJupiterVersion"
+    testImplementation "io.vertx:vertx-junit5:$vertxVersion"
+    testImplementation "org.junit.jupiter:junit-jupiter:$junitJupiterVersion"
 }
 
 application {
-  mainClassName = 'com.github.gcnyin.timemanagement.Main'
+    mainClassName = 'com.github.gcnyin.timemanagement.Main'
 }
 
 test {
-  useJUnitPlatform()
-  testLogging.showStandardStreams(true)
+    useJUnitPlatform()
+    testLogging.showStandardStreams(true)
 }

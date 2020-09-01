@@ -1,6 +1,12 @@
-.idea/
+.editorconfig
 .git/
+.gitignore
 .gradle/
+.idea/
+README.md
 build/
+docker-compose.yml
+docs/
 out/
+performance-test/
 target/
