@@ -19,6 +19,7 @@ public class Main {
     future.onComplete(s -> {
       if (s.failed()) {
         log.error("failed");
+        vertx.close();
       } else {
         String result = s.result();
         log.info("deployId {}", result);
