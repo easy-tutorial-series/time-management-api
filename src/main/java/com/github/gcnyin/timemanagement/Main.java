@@ -16,8 +16,9 @@ public class Main {
     String databaseName = System.getenv("MONGO_DATABASE");
     String connectionString = "mongodb://" + mongoUser + ":" + mongoPassword + "@" + mongoHost;
     MongoDatabase database = MongoClients.create(connectionString).getDatabase(databaseName);
+    WebSocketHandler webSocketHandler = new WebSocketHandler();
 
-    MainVerticle verticle = new MainVerticle(database);
+    MainVerticle verticle = new MainVerticle(database, webSocketHandler);
     Vertx vertx = Vertx.vertx();
     Future<String> future = vertx.deployVerticle(verticle);
     future.onComplete(result -> {

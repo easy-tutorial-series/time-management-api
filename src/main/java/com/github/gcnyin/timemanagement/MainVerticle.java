@@ -17,9 +17,11 @@ import java.util.concurrent.TimeUnit;
 @Slf4j
 public class MainVerticle extends AbstractVerticle {
   private final MongoDatabase mongoDatabase;
+  private final WebSocketHandler webSocketHandler;
 
-  public MainVerticle(MongoDatabase mongoDatabase) {
+  public MainVerticle(MongoDatabase mongoDatabase, WebSocketHandler webSocketHandler) {
     this.mongoDatabase = mongoDatabase;
+    this.webSocketHandler = webSocketHandler;
   }
 
   @Override
@@ -33,6 +35,7 @@ public class MainVerticle extends AbstractVerticle {
   private void boostrapVertx(Promise<Void> startPromise, Router router) {
     vertx.createHttpServer()
       .requestHandler(router)
+      .webSocketHandler(webSocketHandler)
       .listen(8080, http -> handleHttpStartResult(startPromise, http));
   }
 
