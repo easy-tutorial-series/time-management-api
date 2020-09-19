@@ -1,11 +1,11 @@
 # time-management-api
 
-![https://vertx.io](https://img.shields.io/badge/vert.x-4.0.0.Beta1-purple.svg)
-![Java14](https://img.shields.io/badge/Java-14-yellow.svg)
+![https://vertx.io](https://img.shields.io/badge/vert.x-4.0.0.Beta3-purple.svg)
+![Java11](https://img.shields.io/badge/Java-11-yellow.svg)
 
 ## Requirements
 
-- Java 14
+- Java 11
 - MongoDB
 
 ## Build
