@@ -54,5 +54,4 @@ public class TokenPostHandler implements Handler<RoutingContext> {
         response::end,
         e -> response.setStatusCode(500).end(new JsonObject().put("error", e.getMessage()).encode()));
   }
-
 }

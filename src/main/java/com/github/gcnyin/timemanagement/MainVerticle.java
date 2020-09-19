@@ -2,6 +2,7 @@ package com.github.gcnyin.timemanagement;
 
 import com.mongodb.reactivestreams.client.MongoDatabase;
 import io.jsonwebtoken.security.Keys;
+import io.reactivex.rxjava3.core.Flowable;
 import io.reactivex.rxjava3.core.Single;
 import io.vertx.core.AbstractVerticle;
 import io.vertx.core.AsyncResult;
@@ -50,8 +51,9 @@ public class MainVerticle extends AbstractVerticle {
   }
 
   private Single<Router> bootstrapRouter() {
-    return Single.fromPublisher(mongoDatabase.listCollectionNames())
+    return Flowable.fromPublisher(mongoDatabase.listCollectionNames())
       .timeout(5, TimeUnit.SECONDS)
+      .count()
       .map(i -> {
         log.info("mongodb health check passed");
         return getRouter();
@@ -64,13 +66,15 @@ public class MainVerticle extends AbstractVerticle {
     JwtUtils jwtUtils = new JwtUtils(key);
     CommonFailureHandler commonFailureHandler = new CommonFailureHandler();
     JwtAuthenticationHandler jwtAuthenticationHandler = new JwtAuthenticationHandler(jwtUtils);
+    BodyHandler bodyHandler = BodyHandler.create();
     TokenPostHandler tokenPostHandler = new TokenPostHandler(jwtUtils, mongoDatabase);
     UserGetHandler userGetHandler = new UserGetHandler();
     UserPostHandler userPostHandler = new UserPostHandler(mongoDatabase.getCollection("user"));
+    CardPostHandler cardPostHandler = new CardPostHandler(mongoDatabase.getCollection("card"));
 
     Router router = Router.router(vertx);
     router.post("/token")
-      .handler(BodyHandler.create())
+      .handler(bodyHandler)
       .handler(tokenPostHandler)
       .failureHandler(commonFailureHandler);
     router.get("/user")
@@ -78,8 +82,13 @@ public class MainVerticle extends AbstractVerticle {
       .handler(userGetHandler)
       .failureHandler(commonFailureHandler);
     router.post("/user")
-      .handler(BodyHandler.create())
+      .handler(bodyHandler)
       .handler(userPostHandler)
+      .failureHandler(commonFailureHandler);
+    router.post("/card")
+      .handler(jwtAuthenticationHandler)
+      .handler(bodyHandler)
+      .handler(cardPostHandler)
       .failureHandler(commonFailureHandler);
     return router;
   }

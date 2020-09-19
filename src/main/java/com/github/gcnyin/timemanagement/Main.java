@@ -21,16 +21,14 @@ public class Main {
     MainVerticle verticle = new MainVerticle(database, webSocketHandler);
     Vertx vertx = Vertx.vertx();
     Future<String> future = vertx.deployVerticle(verticle);
-    future.onComplete(result -> {
-      if (result.failed()) {
-        log.error("startup failed", result.cause());
-        vertx.close();
-      } else {
-        long end = System.currentTimeMillis();
-        log.info("deployId {}", result.result());
-        long time = end - start;
-        log.info("spent time {} millis", time);
-      }
+    future.onFailure(throwable -> {
+      log.error("startup failed", throwable);
+      vertx.close();
+    }).onSuccess(s -> {
+      long end = System.currentTimeMillis();
+      log.info("deployId {}", s);
+      long time = end - start;
+      log.info("spent time {} millis", time);
     });
   }
 }
