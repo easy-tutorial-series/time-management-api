@@ -11,7 +11,7 @@
 ## Build
 
 ```
-$ ./gradlew clean build
+./gradlew clean build
 ```
 
 ## Run
@@ -19,11 +19,17 @@ $ ./gradlew clean build
 Running the application only needs one step.
 
 ```
-$ docker-compose up -d
+docker-compose up -d
 ```
 
 Or you can manually run the jar file.
 
 ```
-$ java -jar build/libs/time-management-api-all.jar
+java -jar build/libs/time-management-api-all.jar
+```
+
+Setup MongoDB
+
+```
+docker-compose up -d mongo
 ```
