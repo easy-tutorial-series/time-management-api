@@ -2,10 +2,13 @@ package com.github.gcnyin.mybatisdemo.controller;
 
 import com.github.gcnyin.mybatisdemo.dao.UserMapper;
 import com.github.gcnyin.mybatisdemo.model.User;
+import com.github.gcnyin.mybatisdemo.request.CreateUser;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@Slf4j
 @RestController
 @RequestMapping("/user")
 public class UserController {
@@ -26,7 +29,8 @@ public class UserController {
   }
 
   @PostMapping
-  public User createUser(String name) {
-    return userMapper.create(name);
+  public void createUser(@RequestBody CreateUser request) {
+    int i = userMapper.create(request.getName(), request.getPassword());
+    log.info("insert {} rows", i);
   }
 }

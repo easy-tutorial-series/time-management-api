@@ -1,8 +1,8 @@
 create table `user`
 (
-    `id`       int           not null auto_increment primary key,
-    `name`     varchar(64)   not null,
-    `password` varbinary(64) not null
+    `id`       int                not null auto_increment primary key,
+    `name`     varchar(64) unique not null,
+    `password` varbinary(64)      not null
 );
 
 insert into `user` (name, password)
