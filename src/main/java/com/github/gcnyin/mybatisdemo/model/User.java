@@ -6,7 +6,7 @@ import java.util.List;
 
 @Data
 public class User {
-  private String id;
+  private Integer id;
   private String name;
   private String password;
   private List<Card> cards;

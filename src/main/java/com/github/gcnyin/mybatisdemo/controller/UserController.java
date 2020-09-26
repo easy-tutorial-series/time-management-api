@@ -1,6 +1,6 @@
 package com.github.gcnyin.mybatisdemo.controller;
 
-import com.github.gcnyin.mybatisdemo.dao.UserMapper;
+import com.github.gcnyin.mybatisdemo.mapper.UserMapper;
 import com.github.gcnyin.mybatisdemo.model.User;
 import com.github.gcnyin.mybatisdemo.request.CreateUser;
 import lombok.extern.slf4j.Slf4j;
@@ -24,7 +24,7 @@ public class UserController {
   }
 
   @GetMapping("/{id}")
-  public User findById(@PathVariable("id") String id) {
+  public User findById(@PathVariable("id") Integer id) {
     return userMapper.findById(id);
   }
 

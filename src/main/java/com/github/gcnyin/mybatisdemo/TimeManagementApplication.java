@@ -5,7 +5,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-@MapperScan("com.github.gcnyin.mybatisdemo.dao")
+@MapperScan("com.github.gcnyin.mybatisdemo.mapper")
 public class TimeManagementApplication {
   public static void main(String[] args) {
     SpringApplication.run(TimeManagementApplication.class, args);

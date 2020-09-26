@@ -4,8 +4,7 @@ spring:
     username: admin
     password: password
 mybatis:
-  configuration:
-    logImpl: org.apache.ibatis.logging.slf4j.Slf4jImpl
+  config-location: classpath:mybatis/root-config.xml
 logging:
   level:
     com.github.gcnyin.mybatisdemo.dao:
