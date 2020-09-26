@@ -2,9 +2,7 @@ package com.github.gcnyin.mybatisdemo.controller;
 
 import com.github.gcnyin.mybatisdemo.dao.UserMapper;
 import com.github.gcnyin.mybatisdemo.model.User;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -19,6 +17,16 @@ public class UserController {
 
   @GetMapping
   public List<User> all() {
-    return userMapper.selectList(null);
+    return userMapper.findAll();
+  }
+
+  @GetMapping("/{id}")
+  public User findById(@PathVariable("id") String id) {
+    return userMapper.findById(id);
+  }
+
+  @PostMapping
+  public User createUser(String name) {
+    return userMapper.create(name);
   }
 }
