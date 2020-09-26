@@ -11,14 +11,14 @@ import java.util.List;
 @RestController
 @RequestMapping("/")
 public class IndexController {
-    private final UserMapper userMapper;
+  private final UserMapper userMapper;
 
-    public IndexController(UserMapper userMapper) {
-        this.userMapper = userMapper;
-    }
+  public IndexController(UserMapper userMapper) {
+    this.userMapper = userMapper;
+  }
 
-    @GetMapping
-    public List<User> userList() {
-        return userMapper.findAll();
-    }
+  @GetMapping
+  public List<User> userList() {
+    return userMapper.findAll();
+  }
 }
