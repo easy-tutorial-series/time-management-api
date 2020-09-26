@@ -1,0 +1,16 @@
+version: '3.1'
+services:
+  mysql:
+    image: mysql:8.0.21
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: password
+      MYSQL_USER: admin
+      MYSQL_PASSWORD: password
+      MYSQL_DATABASE: testdb
+    ports:
+      - 3306:3306
+    volumes:
+      - mysqldata:/var/lib/mysql
+volumes:
+  mysqldata:
