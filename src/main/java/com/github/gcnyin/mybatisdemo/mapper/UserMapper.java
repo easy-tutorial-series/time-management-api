@@ -8,13 +8,13 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface UserMapper extends Mapper {
+public interface UserMapper {
   @Select("select id, name from user")
   List<User> findAll();
 
   @Select("select id, name from user where id = #{id}")
   @Results(value = {
-    @Result(property = "id", column = "id"),
+    @Result(property = "id", column = "id", id = true),
     @Result(property = "name", column = "name"),
     @Result(property = "cards", column = "id", javaType = List.class, many = @Many(select = "findCardsByUserId"))
   })
