@@ -13,4 +13,7 @@ public interface UserMapper {
 
   @Insert("insert into user(name, password) values (#{name}, #{password})")
   int create(@Param(("name")) String name, @Param("password") String password);
+
+  @Select("select count(1) from user where name = #{name}")
+  int countByName(@Param("name") String name);
 }

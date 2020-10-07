@@ -1,5 +1,6 @@
 package com.github.gcnyin.mybatisdemo.controller;
 
+import com.github.gcnyin.mybatisdemo.BadRequestException;
 import com.github.gcnyin.mybatisdemo.mapper.UserMapper;
 import com.github.gcnyin.mybatisdemo.model.User;
 import com.github.gcnyin.mybatisdemo.request.CreateUser;
@@ -24,8 +25,11 @@ public class UserController {
 
   @PostMapping
   public User createUser(@RequestBody CreateUser request) {
-    String encode = passwordEncoder.encode(request.getPassword());
     String name = request.getName();
+    if (userMapper.countByName(name) >= 1) {
+      throw new BadRequestException("user already exists");
+    }
+    String encode = passwordEncoder.encode(request.getPassword());
     userMapper.create(name, encode);
     return userMapper.findByName(name);
   }
