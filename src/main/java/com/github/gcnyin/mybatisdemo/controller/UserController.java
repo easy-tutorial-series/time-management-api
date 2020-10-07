@@ -5,9 +5,10 @@ import com.github.gcnyin.mybatisdemo.model.User;
 import com.github.gcnyin.mybatisdemo.request.CreateUser;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 @Slf4j
 @RestController
@@ -21,20 +22,11 @@ public class UserController {
     this.passwordEncoder = passwordEncoder;
   }
 
-  @GetMapping
-  public List<User> all() {
-    return userMapper.findAll();
-  }
-
-  @GetMapping("/{id}")
-  public User findById(@PathVariable("id") Integer id) {
-    return userMapper.findById(id);
-  }
-
   @PostMapping
-  public void createUser(@RequestBody CreateUser request) {
+  public User createUser(@RequestBody CreateUser request) {
     String encode = passwordEncoder.encode(request.getPassword());
-    int i = userMapper.create(request.getName(), encode);
-    log.info("insert {} rows", i);
+    String name = request.getName();
+    userMapper.create(name, encode);
+    return userMapper.findByName(name);
   }
 }

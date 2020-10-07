@@ -11,5 +11,4 @@ public class User {
   private String name;
   @JsonIgnore
   private String password;
-  private List<Card> cards;
 }
