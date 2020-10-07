@@ -4,6 +4,7 @@ import com.github.gcnyin.mybatisdemo.mapper.UserMapper;
 import com.github.gcnyin.mybatisdemo.model.User;
 import com.github.gcnyin.mybatisdemo.request.CreateUser;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -13,9 +14,11 @@ import java.util.List;
 @RequestMapping("/user")
 public class UserController {
   private final UserMapper userMapper;
+  private final PasswordEncoder passwordEncoder;
 
-  public UserController(UserMapper userMapper) {
+  public UserController(UserMapper userMapper, PasswordEncoder passwordEncoder) {
     this.userMapper = userMapper;
+    this.passwordEncoder = passwordEncoder;
   }
 
   @GetMapping
@@ -30,7 +33,8 @@ public class UserController {
 
   @PostMapping
   public void createUser(@RequestBody CreateUser request) {
-    int i = userMapper.create(request.getName(), request.getPassword());
+    String encode = passwordEncoder.encode(request.getPassword());
+    int i = userMapper.create(request.getName(), encode);
     log.info("insert {} rows", i);
   }
 }

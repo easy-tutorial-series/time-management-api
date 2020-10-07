@@ -2,13 +2,13 @@ create table `user`
 (
     `id`       int                not null auto_increment primary key,
     `name`     varchar(64) unique not null,
-    `password` varbinary(64)      not null
+    `password` varbinary(100)      not null
 );
 
 insert into `user` (name, password)
-values ('admin', 'password'),
-       ('root', 'password'),
-       ('user1', 'password');
+values ('admin', '$2a$10$XSA8nQXMu3Ato58F1F7XWuv3LZ9LSvavcnTDKmmFOW4Izk3h0h9du'),
+       ('root', '$2a$10$XSA8nQXMu3Ato58F1F7XWuv3LZ9LSvavcnTDKmmFOW4Izk3h0h9du'),
+       ('user1', '$2a$10$XSA8nQXMu3Ato58F1F7XWuv3LZ9LSvavcnTDKmmFOW4Izk3h0h9du');
 
 create table `card`
 (
