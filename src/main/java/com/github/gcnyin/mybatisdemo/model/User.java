@@ -11,4 +11,5 @@ public class User {
   private String name;
   @JsonIgnore
   private String password;
+  private List<Authority> authorities;
 }
