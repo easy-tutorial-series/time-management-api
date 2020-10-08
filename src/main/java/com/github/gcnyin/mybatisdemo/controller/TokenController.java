@@ -1,9 +1,9 @@
 package com.github.gcnyin.mybatisdemo.controller;
 
 import com.github.gcnyin.mybatisdemo.model.Token;
-import com.github.gcnyin.mybatisdemo.request.CreateTokenRequest;
 import com.github.gcnyin.mybatisdemo.service.TokenService;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -17,8 +17,9 @@ public class TokenController {
 
   @PostMapping
   @ResponseStatus(value = HttpStatus.CREATED)
-  public Token createToken(@RequestBody CreateTokenRequest request) {
-    return tokenService.createToken(request.getUsername(), request.getPassword());
+  public Token createToken() {
+    String name = SecurityContextHolder.getContext().getAuthentication().getName();
+    return tokenService.createToken(name);
   }
 
   @DeleteMapping("/{id}")

@@ -24,7 +24,6 @@ public class UserController {
   }
 
   @GetMapping
-  @PreAuthorize("hasRole('ADMIN')")
   public List<User> all() {
     return userMapper.findAllUsers();
   }
