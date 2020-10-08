@@ -1,5 +1,6 @@
 package com.github.gcnyin.mybatisdemo.config.security;
 
+import com.github.gcnyin.mybatisdemo.exception.UnauthorizedException;
 import com.github.gcnyin.mybatisdemo.mapper.TokenMapper;
 import com.github.gcnyin.mybatisdemo.mapper.UserMapper;
 import com.github.gcnyin.mybatisdemo.model.Token;
@@ -35,11 +36,14 @@ public class BearerTokenAuthenticationConverter implements AuthenticationConvert
     }
 
     if (header.equalsIgnoreCase(AUTHENTICATION_SCHEME_BEARER)) {
-      throw new BadCredentialsException("Empty bearer authentication token");
+      throw new UnauthorizedException("Empty bearer authentication token");
     }
     String tokenId = header.substring(AUTHENTICATION_SCHEME_BEARER.length() + 1);
-    tokenMapper.touchToken(tokenId);
     Token token = tokenMapper.findById(tokenId);
+    if (token == null) {
+      throw new UnauthorizedException("Invalid token");
+    }
+    tokenMapper.touchToken(tokenId);
     User user = userMapper.findById(token.getUserId());
     return new BearerAuthenticationToken(user.getName());
   }
