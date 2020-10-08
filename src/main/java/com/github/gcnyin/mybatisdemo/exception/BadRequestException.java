@@ -1,4 +1,4 @@
-package com.github.gcnyin.mybatisdemo;
+package com.github.gcnyin.mybatisdemo.exception;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;

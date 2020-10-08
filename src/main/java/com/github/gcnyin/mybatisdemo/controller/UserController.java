@@ -1,15 +1,14 @@
 package com.github.gcnyin.mybatisdemo.controller;
 
-import com.github.gcnyin.mybatisdemo.BadRequestException;
+import com.github.gcnyin.mybatisdemo.exception.BadRequestException;
 import com.github.gcnyin.mybatisdemo.mapper.UserMapper;
 import com.github.gcnyin.mybatisdemo.model.User;
-import com.github.gcnyin.mybatisdemo.request.CreateUser;
+import com.github.gcnyin.mybatisdemo.request.CreateUserRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
-import javax.annotation.security.PermitAll;
 import java.util.List;
 
 @Slf4j
@@ -31,7 +30,7 @@ public class UserController {
   }
 
   @PostMapping
-  public User createUser(@RequestBody CreateUser request) {
+  public User createUser(@RequestBody CreateUserRequest request) {
     String name = request.getName();
     if (userMapper.countByName(name) >= 1) {
       throw new BadRequestException("user already exists");

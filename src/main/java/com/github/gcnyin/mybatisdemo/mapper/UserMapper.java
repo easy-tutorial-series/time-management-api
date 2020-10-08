@@ -30,6 +30,9 @@ public interface UserMapper {
   )
   User findByName(@Param("name") String name);
 
+  @Select("select id from user where name = #{name} limit 1")
+  Integer findIdByName(@Param("name") String name);
+
   @Insert("insert into user(name, password) values (#{name}, #{password})")
   int create(@Param(("name")) String name, @Param("password") String password);
 
