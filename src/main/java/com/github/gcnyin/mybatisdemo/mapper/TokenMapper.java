@@ -9,7 +9,7 @@ public interface TokenMapper {
   @Insert("insert into token(id, user_id) values (#{tokenId}, #{userId})")
   void createToken(@Param("tokenId") String tokenId, @Param("userId") Integer userId);
 
-  @Select("select id, user_id as userId from token where id = #{tokenId}")
+  @Select("select id, user_id as userId, created_date as createdDate, last_modified_date as lastModifiedDate from token where id = #{tokenId}")
   Token findById(@Param("tokenId") String tokenId);
 
   @Update("update token set last_modified_date = current_timestamp where id = #{tokenId}")
