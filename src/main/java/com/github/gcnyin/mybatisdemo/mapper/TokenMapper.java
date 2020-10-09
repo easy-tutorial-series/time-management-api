@@ -17,4 +17,7 @@ public interface TokenMapper {
 
   @Delete("delete from token where id = #{tokenId}")
   void deleteToken(@Param("tokenId") String tokenId);
+
+  @Delete("delete from token where last_modified_date < date_sub(now(), interval 60 minute)")
+  void clearTokens();
 }
