@@ -31,7 +31,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     daoAuthenticationProvider.setUserDetailsService(userDetailsService);
     daoAuthenticationProvider.setPasswordEncoder(encoder());
     auth.authenticationProvider(bearerAuthenticationProvider)
-    .authenticationProvider(daoAuthenticationProvider);
+      .authenticationProvider(daoAuthenticationProvider);
   }
 
   @Override
@@ -40,7 +40,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
       .antMatchers(HttpMethod.GET, "/swagger-ui.html**")
       .antMatchers(HttpMethod.GET, "/webjars/springfox-swagger-ui/**")
       .antMatchers(HttpMethod.GET, "/swagger-resources/**")
-      .antMatchers(HttpMethod.GET, "/v2/api-docs");
+      .antMatchers(HttpMethod.GET, "/v2/api-docs")
+      .antMatchers(HttpMethod.POST, "/user");
   }
 
   @Override
@@ -48,8 +49,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     http
       .authorizeRequests()
       .antMatchers("/heartbeat").permitAll()
-      .antMatchers(HttpMethod.POST, "/token").authenticated()
-      .antMatchers(HttpMethod.POST, "/user").anonymous()
       .anyRequest().authenticated()
       .and().httpBasic()
       .and().addFilterBefore(bearerAuthenticationFilter(), BasicAuthenticationFilter.class)
