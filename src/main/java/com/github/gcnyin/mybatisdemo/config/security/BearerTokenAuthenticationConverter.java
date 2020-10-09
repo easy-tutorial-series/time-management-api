@@ -3,15 +3,19 @@ package com.github.gcnyin.mybatisdemo.config.security;
 import com.github.gcnyin.mybatisdemo.exception.UnauthorizedException;
 import com.github.gcnyin.mybatisdemo.mapper.TokenMapper;
 import com.github.gcnyin.mybatisdemo.mapper.UserMapper;
+import com.github.gcnyin.mybatisdemo.model.Authority;
 import com.github.gcnyin.mybatisdemo.model.Token;
 import com.github.gcnyin.mybatisdemo.model.User;
 import org.springframework.http.HttpHeaders;
 import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.web.authentication.AuthenticationConverter;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Component
 public class BearerTokenAuthenticationConverter implements AuthenticationConverter {
@@ -45,6 +49,10 @@ public class BearerTokenAuthenticationConverter implements AuthenticationConvert
     }
     tokenMapper.touchToken(tokenId);
     User user = userMapper.findById(token.getUserId());
-    return new BearerAuthenticationToken(user.getName());
+    List<SimpleGrantedAuthority> authorities = user.getAuthorities().stream()
+      .map(Authority::getAuthority)
+      .map(SimpleGrantedAuthority::new)
+      .collect(Collectors.toList());
+    return new BearerAuthenticationToken(user.getName(), tokenId, authorities);
   }
 }

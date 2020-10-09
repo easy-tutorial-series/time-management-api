@@ -16,12 +16,6 @@ public class BearerAuthenticationToken extends AbstractAuthenticationToken {
     setAuthenticated(true);
   }
 
-  public BearerAuthenticationToken(String token) {
-    super(null);
-    this.principal = token;
-    this.credential = null;
-  }
-
   @Override
   public Object getCredentials() {
     return credential;

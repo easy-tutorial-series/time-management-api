@@ -3,7 +3,6 @@ package com.github.gcnyin.mybatisdemo.service;
 import com.github.gcnyin.mybatisdemo.mapper.TokenMapper;
 import com.github.gcnyin.mybatisdemo.mapper.UserMapper;
 import com.github.gcnyin.mybatisdemo.model.Token;
-import com.github.gcnyin.mybatisdemo.model.User;
 import org.springframework.stereotype.Service;
 
 import java.util.UUID;

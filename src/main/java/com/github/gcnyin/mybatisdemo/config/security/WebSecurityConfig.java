@@ -51,6 +51,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
       .httpBasic()
       .and().authorizeRequests()
       .antMatchers("/heartbeat").permitAll()
+      .antMatchers(HttpMethod.GET, "/user").hasRole("ADMIN")
       .anyRequest().authenticated()
       .and().addFilterBefore(bearerAuthenticationFilter(), BasicAuthenticationFilter.class)
       .formLogin().disable().csrf().disable()

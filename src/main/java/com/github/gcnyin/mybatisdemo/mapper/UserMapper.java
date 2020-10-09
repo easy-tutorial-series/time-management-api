@@ -17,7 +17,7 @@ public interface UserMapper {
       @Result(property = "authorities", column = "id", javaType = List.class, many = @Many(select = "findAuthoritiesByUsername"))
     }
   )
-  List<User> findAllUsers();
+  List<User> findAll();
 
   @Select("select id, name, password from user where name = #{name}")
   @Results(
