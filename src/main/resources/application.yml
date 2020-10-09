@@ -7,4 +7,4 @@ mybatis:
   config-location: classpath:mybatis/root-config.xml
 logging:
   level:
-    com.github.gcnyin.mybatisdemo.mapper: TRACE
+    com.github.gcnyin.mybatisdemo.mapper: DEBUG
