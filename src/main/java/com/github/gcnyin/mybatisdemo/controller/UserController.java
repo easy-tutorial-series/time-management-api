@@ -1,10 +1,11 @@
 package com.github.gcnyin.mybatisdemo.controller;
 
 import com.github.gcnyin.mybatisdemo.model.User;
-import com.github.gcnyin.mybatisdemo.request.CreateUserRequest;
 import com.github.gcnyin.mybatisdemo.service.UserService;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
@@ -21,10 +22,5 @@ public class UserController {
   @GetMapping
   public List<User> all() {
     return userService.findAll();
-  }
-
-  @PostMapping
-  public User createUser(@RequestBody CreateUserRequest request) {
-    return userService.createUser(request.getName(), request.getPassword());
   }
 }
