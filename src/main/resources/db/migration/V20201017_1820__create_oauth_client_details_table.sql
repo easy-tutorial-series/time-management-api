@@ -19,3 +19,5 @@ INSERT INTO oauth_client_details
  refresh_token_validity, additional_information, autoapprove)
 VALUES ('client1', '$2a$10$IL3BZ4uf55GIZ4BUs0zVmeG1SpWcsJapzrHYRlnhimvoOUwRrdzPy', 'all',
         'authorization_code,refresh_token,password', null, null, 3600, 36000, null, true);
+-- secret is 'password'
+
