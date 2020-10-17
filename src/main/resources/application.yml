@@ -5,3 +5,8 @@ spring:
     password: password
 mybatis:
   config-location: classpath:mybatis/root-config.xml
+security:
+  oauth2:
+    client:
+      client-id: client1
+      client-secret: secret1

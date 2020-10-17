@@ -1,4 +1,4 @@
-package com.github.gcnyin.mybatisdemo.config.security;
+package com.github.gcnyin.mybatisdemo.config;
 
 import com.github.gcnyin.mybatisdemo.mapper.UserMapper;
 import com.github.gcnyin.mybatisdemo.model.Authority;
