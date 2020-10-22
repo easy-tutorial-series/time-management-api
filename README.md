@@ -3,7 +3,7 @@
 ## Requirement
 
 - Java 11
-- MySQL 5.7
+- MySQL 8.0
 
 ## Build
 
